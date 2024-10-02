@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data</title>
+</head>
+<body>
+    <h1>Sensor Data</h1>
+    <table id="dataTable">
+        <tr>
+            <th>Temperature (°C)</th>
+            <th>Pressure (hPa)</th>
+            <th>Lux</th>
+            <th>Wind Direction</th>
+        </tr>
+    </table>
+    <script>
+        const sheetID = '1KVge-ciWA8x8bhXfbSmwTzWtqYnfZ3EWITCTEHPxk6s';
+        const apiKey = 'AIzaSyAzPXN6jSZXnnXr9h0o7Sh7IM1t9KBenuk'; // Optional
+
+        async function fetchData() {
+            const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${apiKey}`);
+            const data = await response.json();
+            const rows = data.values;
+
+            const table = document.getElementById('dataTable');
+            rows.forEach(row => {
+                const newRow = table.insertRow();
+                row.forEach(cell => {
+                    const newCell = newRow.insertCell();
+                    newCell.textContent = cell;
+                });
+            });
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
